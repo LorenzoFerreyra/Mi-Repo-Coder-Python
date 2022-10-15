@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from applorenzo.views import mostrar_mi_template, saludo, saludo_dos, saludar_a, mostrar_mi_template
+from applorenzo.views import mostrar_mi_template, saludo, saludo_dos, saludar_a, mostrar_mi_template, monstrar_familiares
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hola-mundo/saludar', saludo),
     path('hola-mundo/saludo-dos', saludo_dos),
     path('hola-mundo/saludar/<name>', saludar_a),
-    path('mostrar-mi-template/', mostrar_mi_template)
+    path('mostrar-mi-template/', mostrar_mi_template),
+    path('mi-familia/', monstrar_familiares)
 ]
