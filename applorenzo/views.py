@@ -1,3 +1,5 @@
+from ast import Delete
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from django.http import HttpResponse
 from applorenzo.models import Familiar
@@ -36,10 +38,11 @@ class BuscarFamiliar(View):
             return render(request, self.template_name, {'form':form, 
                                                         'lista_familiares':lista_familiares})
         return render(request, self.template_name, {"form": form})
+
 class AltaFamiliar(View):
 
     form_class = FamiliarForm
-    template_name = 'ejemplo/alta_familiar.html'
+    template_name = 'applorenzo/alta_familiar.html'
     initial = {"nombre":"", "direccion":"", "numero_pasaporte":""}
 
     def get(self, request):
@@ -56,3 +59,45 @@ class AltaFamiliar(View):
                                                         'msg_exito': msg_exito})
         
         return render(request, self.template_name, {"form": form})
+
+class ModificarFamiliar(View):
+        template_name = "applorenzo/modificar_familiar.html"
+        success_template = "applorenzo/exito.html"
+        form_class = FamiliarForm
+        initial = {"nombre":"", "direccion":"", "numero_pasaporte":""}
+        
+    
+        def get(self, request, pk):
+            familiar = get_object_or_404(Familiar, pk=pk)
+            form = self.form_class(instance=familiar)
+            return render(request, self.template_name, {"form": form, "pk":pk})
+
+        def post(self, request, pk):
+            familiar= get_object_or_404(Familiar, pk=pk)
+            form  = self.form_class(request.POST, instance=familiar)
+            if form.is_valid():
+               form.save()
+               form = self.form_class(initial=self.initial)
+           
+            return render(request, self.success_template)
+
+class EliminarFamiliar(View):
+        template_name = "applorenzo/eliminar_familiar.html"
+        success_template = "applorenzo/exito.html"
+        form_class = FamiliarForm
+        initial = {"nombre":"", "direccion":"", "numero_pasaporte":""}
+        
+    
+        def get(self, request, pk):
+            familiar = get_object_or_404(Familiar, pk=pk)
+            form = self.form_class(instance=familiar)
+            return render(request, self.template_name, {"form": form, "pk":pk})
+
+        def post(self, request, pk):
+            familiar= get_object_or_404(Familiar, pk=pk)
+            form  = self.form_class(request.POST, instance=familiar)
+            if form.is_valid():
+               familiar.delete()
+               form = self.form_class(initial=self.initial)
+           
+            return render(request, self.success_template)

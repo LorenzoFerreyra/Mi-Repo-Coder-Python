@@ -1,0 +1,12 @@
+{% extends 'applorenzo/base.html' %}
+{% block titulo%} Eliminar Familiar {% endblock %}
+{% block contenido %}
+    
+    <form action="/mi-familia/eliminar_familiar/{{pk}}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Eliminar">
+    </form>
+
+    
+{% endblock %}
